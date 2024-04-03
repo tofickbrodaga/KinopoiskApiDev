@@ -1,21 +1,23 @@
-from flask import Flask, request, render_template, redirect, url_for
-from sqlalchemy import create_engine
-from model import Base, Movie
-from sqlalchemy.orm import sessionmaker
+from os import getenv
+
 import requests
 from dotenv import load_dotenv
-from os import getenv
+from flask import Flask, redirect, render_template, request, url_for
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from model import Base, Movie
 
 load_dotenv()
 
 app = Flask(__name__)
 
-DATABASE_URL = "postgresql://test:test@localhost:37891/test"  # Подставьте свои данные
-engine = create_engine(DATABASE_URL)
+engine = create_engine(getenv('DATABASE_URL'))
 Session = sessionmaker(bind=engine)
 
 
 Base.metadata.create_all(engine)
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -24,6 +26,7 @@ def index():
         movies = search_movie(query)
         return render_template('index.html', movies=movies, query=query)
     return render_template('index.html')
+
 
 def get_movie_details(movie_id):
     url = f"https://api.kinopoisk.dev/v1.4/movie/{movie_id}"
@@ -35,8 +38,7 @@ def get_movie_details(movie_id):
     if response.status_code == 200:
         data = response.json()
         return data
-    else:
-        return None
+
 
 @app.route('/add_movie/<movie_id>', methods=['POST'])
 def add_movie(movie_id):
@@ -52,8 +54,6 @@ def add_movie(movie_id):
         session.commit()
         session.close()
         return redirect(url_for('index'))
-    else:
-        return "Failed to fetch movie details"
 
 def search_movie(query):
     url = f"https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=10&query={query}"
@@ -63,10 +63,8 @@ def search_movie(query):
     }
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        data = response.json()
-        return data
-    else:
-        return None
+        return response.json()
+
 
 @app.route('/favorites', methods=['GET', 'POST'])
 def favorites():
@@ -78,10 +76,9 @@ def favorites():
         session.commit()
         session.close()
         return redirect(url_for('favorites'))
-    else:
-        movies = session.query(Movie).all()
-        session.close()
-        return render_template('favorites.html', movies=movies)
+    movies = session.query(Movie).all()
+    session.close()
+    return render_template('favorites.html', movies=movies)
 
 
 if __name__ == '__main__':
