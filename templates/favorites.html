@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorites</title>
+</head>
+<body>
+    <h1>My Favorites</h1>
+    <h2>Favorite Movies:</h2>
+    <ul>
+        {% for movie in movies %}
+            <li>
+                {{ movie.name }} ({{ movie.year }}) - Rating: {{ movie.rating_kp }} / 10
+                <form action="/favorites" method="post">
+                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                    <button type="submit">Remove</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Favorite Actors:</h2>
+    <ul>
+        {% for actor in actors %}
+            <li>
+                {{ actor.name }} ({{ actor.birth_year }}) - Country: {{ actor.country }}
+                <form action="/favorites" method="post">
+                    <input type="hidden" name="actor_id" value="{{ actor.id }}">
+                    <button type="submit">Remove</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <a href="/">Back to Search</a>
+</body>
+</html>
