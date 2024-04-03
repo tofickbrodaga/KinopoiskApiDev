@@ -3,36 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Favorites</title>
+    <title>Favorites</title>
 </head>
 <body>
-    <h1>My Favorites</h1>
-    <h2>Favorite Movies:</h2>
+    <h1>Favorite Movies</h1>
     <ul>
         {% for movie in movies %}
             <li>
-                {{ movie.name }} ({{ movie.year }}) - Rating: {{ movie.rating_kp }} / 10
+                <span>{{ movie.name }} ({{ movie.year }})</span>
                 <form action="/favorites" method="post">
-                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
-                    <button type="submit">Remove</button>
+                    <input type="hidden" name="entity_id" value="{{ movie.id }}">
+                    <input type="hidden" name="entity_type" value="movie">
+                    <button type="submit">Remove from Favorites</button>
                 </form>
             </li>
         {% endfor %}
     </ul>
 
-    <h2>Favorite Actors:</h2>
+    <h1>Favorite Actors</h1>
     <ul>
         {% for actor in actors %}
             <li>
-                {{ actor.name }} ({{ actor.birth_year }}) - Country: {{ actor.country }}
+                <span>{{ actor.name }}</span>
                 <form action="/favorites" method="post">
-                    <input type="hidden" name="actor_id" value="{{ actor.id }}">
-                    <button type="submit">Remove</button>
+                    <input type="hidden" name="entity_id" value="{{ actor.id }}">
+                    <input type="hidden" name="entity_type" value="actor">
+                    <button type="submit">Remove from Favorites</button>
                 </form>
             </li>
         {% endfor %}
     </ul>
-    
-    <a href="/">Back to Search</a>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 </body>
 </html>

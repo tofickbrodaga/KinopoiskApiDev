@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+    <h2>Entity Type: {{ entity_type }}</h2>
+    {% if movies %}
+        <h2>Search Results for "{{ query }}":</h2>
+        <ul>
+            {% for movie in movies %}
+                <li>Title: {{ movie.get('name', 'N/A') }} ({{ movie.get('year', 'N/A') }})</li>
+                {% if movie.get('rating') %}
+                    <li>Rating: {{ movie['rating']['kp'] }} / 10</li>
+                {% endif %}
+                <li>Genres:
+                    <ul>
+                        {% for genre in movie.get('genres', []) %}
+                            <li>{{ genre.get('name', 'N/A') }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li>
+                    <form action="/add_movie" method="post">
+                        <input type="hidden" name="movie_id" value="{{ movie['id'] }}">
+                        <button type="submit">Add to favorites</button>
+                    </form>
+                </li>
+                <br>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if actors %}
+        <h2>Search Results for "{{ query }}":</h2>
+        <ul>
+            {% for actor in actors %}
+                <li>Name: {{ actor.get('name', 'N/A') }} ({{ actor.get('enName', 'N/A') }})</li>
+                <li>Rating: {{ actor.get('birthday', 'N/A')}}</li>
+                <li>
+                    <form action="/add_actor" method="post">
+                        <input type="hidden" name="actor_id" value="{{ actor['id'] }}">
+                        <button type="submit">Add to favorites</button>
+                    </form>
+                </li>
+                <br>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

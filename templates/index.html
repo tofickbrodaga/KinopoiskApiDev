@@ -2,38 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=3.0">
-    <title>Movie Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
 </head>
-<body><!--Добавить в поиск различные поиски: поиск по актеру фильмов, поиск по рейтингу и тд-->
+<body>
+    <h1>Welcome to Movie and Actor Search</h1>
     <a href="/favorites"><button>View Favorites</button></a>
-    <h1>Movie Search</h1>
-    <form action="/" method="post">
-        <label for="query">Enter movie title:</label>
-        <input type="text" id="query" name="query" required>
+    <form action="/search" method="post">
+        <label for="query">Search Query:</label>
+        <input type="text" id="query" name="query">
+        <select name="entity_type">
+            <option value="movie">Movie</option>
+            <option value="actor">Actor</option>
+        </select>
         <button type="submit">Search</button>
     </form>
-    {% if movies %}
-        <h2>Search Results for "{{ query }}":</h2>
-        <ul>
-            {% for movie in movies['docs'] %}
-                <li>Title: {{ movie['name'] }} ({{ movie['year'] }})</li>
-                <li>Rating: {{ movie['rating']['kp'] }} / 10</li>
-                <li>Genres:
-                    <ul>
-                        {% for genre in movie['genres'] %}
-                            <li>{{ genre['name'] }}</li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li>
-                    <form action="/add_movie/{{ movie['id'] }}" method="post">
-                        <button type="submit">Add to</button>
-                    </form>
-                </li>
-                <br>
-            {% endfor %}
-        </ul>
-    {% endif %}
 </body>
 </html>
