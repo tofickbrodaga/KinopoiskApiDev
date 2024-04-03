@@ -3,45 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorites</title>
+    <title>My Favorites</title>
 </head>
 <body>
-    <h1>Favorite Movies</h1>
+    <h1>My Favorites</h1>
+    <h2>Favorite Movies:</h2>
     <ul>
         {% for movie in movies %}
             <li>
-                <span>{{ movie.name }} ({{ movie.year }})</span>
+                {{ movie.name }} ({{ movie.year }}) - Rating: {{ movie.rating_kp }} / 10
                 <form action="/favorites" method="post">
-                    <input type="hidden" name="entity_id" value="{{ movie.id }}">
-                    <input type="hidden" name="entity_type" value="movie">
-                    <button type="submit">Remove from Favorites</button>
+                    <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                    <button type="submit">Remove</button>
                 </form>
             </li>
         {% endfor %}
     </ul>
 
-    <h1>Favorite Actors</h1>
+    <h2>Favorite Actors:</h2>
     <ul>
         {% for actor in actors %}
             <li>
-                <span>{{ actor.name }}</span>
+                {{ actor.name }} ({{ actor.birth_year }}) - Country: {{ actor.country }}
                 <form action="/favorites" method="post">
-                    <input type="hidden" name="entity_id" value="{{ actor.id }}">
-                    <input type="hidden" name="entity_type" value="actor">
-                    <button type="submit">Remove from Favorites</button>
+                    <input type="hidden" name="actor_id" value="{{ actor.id }}">
+                    <button type="submit">Remove</button>
                 </form>
             </li>
         {% endfor %}
     </ul>
-
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+    
+    <a href="/">Back to Search</a>
 </body>
 </html>
