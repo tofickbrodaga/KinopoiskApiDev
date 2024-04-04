@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Favorites</title>
+    <title>Favorites</title>
+    <link rel="stylesheet" type="text/css" href="static/fav.css">
 </head>
 <body>
-    <h1>My Favorites</h1>
-    <h2>Favorite Movies:</h2>
+<h1>Favorite Movies and Actors</h1>
+<h2>Movies</h2>
+{% if movies %}
     <ul>
         {% for movie in movies %}
-            <li>
-                {{ movie.name }} ({{ movie.year }}) - Rating: {{ movie.rating_kp }} / 10
+            <li>{{ movie.name }} ({{ movie.year }}) - Rating: {{ movie.rating_kp }}/10
                 <form action="/favorites" method="post">
                     <input type="hidden" name="movie_id" value="{{ movie.id }}">
                     <button type="submit">Remove</button>
@@ -19,12 +20,14 @@
             </li>
         {% endfor %}
     </ul>
-
-    <h2>Favorite Actors:</h2>
+{% else %}
+    <p>No favorite movies.</p>
+{% endif %}
+<h2>Actors</h2>
+{% if actors %}
     <ul>
         {% for actor in actors %}
-            <li>
-                {{ actor.name }} ({{ actor.birth_year }}) - Country: {{ actor.country }}
+            <li>{{ actor.name }} ({{ actor.enName }})
                 <form action="/favorites" method="post">
                     <input type="hidden" name="actor_id" value="{{ actor.id }}">
                     <button type="submit">Remove</button>
@@ -32,7 +35,10 @@
             </li>
         {% endfor %}
     </ul>
-    
-    <a href="/">Back to Search</a>
+{% else %}
+    <p>No favorite actors.</p>
+{% endif %}
+
+<a href="/"><button>Back to search</button></a>
 </body>
 </html>

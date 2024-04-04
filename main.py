@@ -66,7 +66,7 @@ def add_actor(actor_id):
     session = Session()
     actor_obj = Actor(
         name=actor['name'],
-        year=actor['enName'],
+        enName=actor['enName'],
     )
     session.add(actor_obj)
     session.commit()
@@ -93,15 +93,21 @@ def add_movie(movie_id):
 def favorites():
     session = Session()
     if request.method == 'POST':
-        movie_id = request.form['movie_id']
-        movie = session.query(Movie).filter_by(id=movie_id).first()
-        session.delete(movie)
+        if 'movie_id' in request.form:
+            movie_id = request.form['movie_id']
+            movie = session.query(Movie).filter_by(id=movie_id).first()
+            session.delete(movie)
+        elif 'actor_id' in request.form:
+            actor_id = request.form['actor_id']
+            actor = session.query(Actor).filter_by(id=actor_id).first()
+            session.delete(actor)
         session.commit()
         session.close()
         return redirect(url_for('favorites'))
     movies = session.query(Movie).all()
+    actors = session.query(Actor).all()
     session.close()
-    return render_template('favorites.html', movies=movies)
+    return render_template('favorites.html', movies=movies, actors=actors)
 
 
 if __name__ == '__main__':
