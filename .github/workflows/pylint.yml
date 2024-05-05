@@ -31,7 +31,7 @@ jobs:
         pip install pytest==6.2.5
         pip install numpy
     - name: Pytest
-      run: cd pytest test_api.py
+      run: pytest test_api.py
   linter_for_model:
       name: Flake8 model.py
       runs-on: ubuntu-latest
