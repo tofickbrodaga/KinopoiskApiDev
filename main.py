@@ -37,27 +37,32 @@ def search_actor(query):
     response = requests.get(url, headers=HEADERS)
     if response.status_code == OK:
         return response.json()
-
+    else:
+        return []
 
 def search_movie(query):
     url = f'https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=10&query={query}'
     response = requests.get(url, headers=HEADERS)
     if response.status_code == OK:
         return response.json()
-
+    else:
+        return []
 
 def get_actor_details(actor_id):
     url = f'https://api.kinopoisk.dev/v1.4/person/{actor_id}'
     response = requests.get(url, headers=HEADERS)
     if response.status_code == OK:
         return response.json()
-
+    else:
+        return {}
 
 def get_movie_details(movie_id):
     url = f'https://api.kinopoisk.dev/v1.4/movie/{movie_id}'
     response = requests.get(url, headers=HEADERS)
     if response.status_code == OK:
         return response.json()
+    else:
+        return {}
 
 
 @app.route('/add_actor/<actor_id>', methods=['POST'])
