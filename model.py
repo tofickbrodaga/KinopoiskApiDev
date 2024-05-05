@@ -1,8 +1,10 @@
 from sqlalchemy import Column, Integer, String, Float
 from sqlalchemy.orm import DeclarativeBase
 
+
 class Base(DeclarativeBase):
     pass
+
 
 class Movie(Base):
     __tablename__ = 'movies'
@@ -11,6 +13,7 @@ class Movie(Base):
     name = Column(String)
     year = Column(Integer)
     rating_kp = Column(Float)
+
 
 class Actor(Base):
     __tablename__ = 'actors'

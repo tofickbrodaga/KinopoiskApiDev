@@ -25,7 +25,7 @@
         <h3>Movies:</h3>
         <ul>
             {% for movie in results['docs'] %}
-                <li>Title: {{ movie['name'] }} ({{ movie['year'] }})</li>
+                <li>Title: {{  movie.get('name') or movie.get('enName', '') or movie.get('alternativeName', '') }} ({{ movie['year'] }})</li>
                 <li>Rating: {{ movie['rating']['kp'] }} / 10</li>
                 <li>
                     <form action="/add_movie/{{ movie['id'] }}" method="post">

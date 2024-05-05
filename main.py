@@ -63,11 +63,11 @@ def get_movie_details(movie_id):
 @app.route('/add_actor/<actor_id>', methods=['POST'])
 def add_actor(actor_id):
     actor = get_actor_details(actor_id)
-    if actor and 'name' in actor:
+    name = actor.get('name') or actor.get('enName', '')
+    if name:
         session = Session()
         actor_obj = Actor(
-            name=actor['name'],
-            enName=actor.get('enName', ''),
+            name=name
         )
         session.add(actor_obj)
         session.commit()
@@ -78,12 +78,13 @@ def add_actor(actor_id):
 @app.route('/add_movie/<movie_id>', methods=['POST'])
 def add_movie(movie_id):
     movie = get_movie_details(movie_id)
-    if movie and 'name' in movie:
+    name = movie.get('name') or movie.get('enName', '') or movie.get('alternativeName', '')
+    if name:
         session = Session()
         movie_obj = Movie(
-            name=movie['name'],
-            year=movie.get('year', 0),
-            rating_kp=movie.get('rating', {}).get('kp', 0),
+            name=name,
+            year=movie.get('year', 'None'),
+            rating_kp=movie.get('rating', {}).get('kp', 'None'),
         )
         session.add(movie_obj)
         session.commit()
@@ -92,17 +93,19 @@ def add_movie(movie_id):
 
 
 @app.route('/favourites', methods=['GET', 'POST'])
-def favorites():
+def favourites():
     session = Session()
     if request.method == 'POST':
         if 'movie_id' in request.form:
             movie_id = request.form['movie_id']
             movie = session.query(Movie).filter_by(id=movie_id).first()
-            session.delete(movie)
+            if movie:
+                session.delete(movie)
         elif 'actor_id' in request.form:
             actor_id = request.form['actor_id']
             actor = session.query(Actor).filter_by(id=actor_id).first()
-            session.delete(actor)
+            if actor:
+                session.delete(actor)
         session.commit()
         session.close()
         return redirect(url_for('favourites'))
