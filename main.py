@@ -63,33 +63,35 @@ def get_movie_details(movie_id):
 @app.route('/add_actor/<actor_id>', methods=['POST'])
 def add_actor(actor_id):
     actor = get_actor_details(actor_id)
-    session = Session()
-    actor_obj = Actor(
-        name=actor['name'],
-        enName=actor['enName'],
-    )
-    session.add(actor_obj)
-    session.commit()
-    session.close()
+    if actor and 'name' in actor:
+        session = Session()
+        actor_obj = Actor(
+            name=actor['name'],
+            enName=actor.get('enName', ''),
+        )
+        session.add(actor_obj)
+        session.commit()
+        session.close()
     return redirect(url_for('index'))
 
 
 @app.route('/add_movie/<movie_id>', methods=['POST'])
 def add_movie(movie_id):
     movie = get_movie_details(movie_id)
-    session = Session()
-    movie_obj = Movie(
-        name=movie['name'],
-        year=movie['year'],
-        rating_kp=movie['rating']['kp'],
-    )
-    session.add(movie_obj)
-    session.commit()
-    session.close()
+    if movie and 'name' in movie:
+        session = Session()
+        movie_obj = Movie(
+            name=movie['name'],
+            year=movie.get('year', 0),
+            rating_kp=movie.get('rating', {}).get('kp', 0),
+        )
+        session.add(movie_obj)
+        session.commit()
+        session.close()
     return redirect(url_for('index'))
 
 
-@app.route('/favorites', methods=['GET', 'POST'])
+@app.route('/favourites', methods=['GET', 'POST'])
 def favorites():
     session = Session()
     if request.method == 'POST':
@@ -103,11 +105,11 @@ def favorites():
             session.delete(actor)
         session.commit()
         session.close()
-        return redirect(url_for('favorites'))
+        return redirect(url_for('favourites'))
     movies = session.query(Movie).all()
     actors = session.query(Actor).all()
     session.close()
-    return render_template('favorites.html', movies=movies, actors=actors)
+    return render_template('favourites.html', movies=movies, actors=actors)
 
 
 if __name__ == '__main__':

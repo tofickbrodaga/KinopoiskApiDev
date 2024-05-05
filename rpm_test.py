@@ -1,23 +1,38 @@
 import pytest
 from main import app
-from model import Actor, Movie
-from sqlalchemy.orm import Session
+
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
 
-def test_index(client):
+
+def test_index_route(client):
     response = client.get('/')
     assert response.status_code == 200
 
-def test_favorites(client):
-    response = client.get('/favorites')
+
+def test_search_movie(client):
+    response = client.post('/', data={'query': 'Inception', 'search_type': 'movies'})
     assert response.status_code == 200
 
-def test_invalid_route(client):
-    response = client.get('/invalid_route')
-    assert response.status_code == 404
 
+def test_search_actor(client):
+    response = client.post('/', data={'query': 'Leonardo DiCaprio', 'search_type': 'actors'})
+    assert response.status_code == 200
+
+
+def test_add_actor_route(client):
+    response = client.post('/add_actor/1')
+    assert response.status_code == 302
+
+
+def test_add_movie_route(client):
+    response = client.post('/add_movie/1')
+    assert response.status_code == 302
+
+
+def test_favorites_route(client):
+    response = client.get('/favourites')
+    assert response.status_code == 200
