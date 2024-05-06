@@ -34,6 +34,7 @@ jobs:
         pip install python-dotenv
         pip install flask
         pip install sqlalchemy
+        pip install psycopg2
     - name: Pytest
       run: pytest test_api.py
   linter_for_model:
