@@ -32,6 +32,7 @@ jobs:
         pip install numpy
         pip install requests
         pip install python-dotenv
+        pip install flask
     - name: Pytest
       run: pytest test_api.py
   linter_for_model:
