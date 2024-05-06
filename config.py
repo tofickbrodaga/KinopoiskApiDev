@@ -7,3 +7,8 @@ HEADERS = {
 
 #http codes
 OK = 200
+MOVED = 302
+
+#methods
+POST = 'POST'
+GET = 'GET'
