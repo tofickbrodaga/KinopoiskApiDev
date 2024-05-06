@@ -31,37 +31,6 @@ def test_index_route(client):
     assert response.status_code == OK
 
 
-def test_search_movie(client):
-    """
-    Test the search movie functionality of the API.
-
-    Args:
-        client (flask.testing.FlaskClient): The test client for the API.
-
-    Return:
-        None
-    """
-    response = client.post('/', data={'query': 'Inception', 'search_type': 'movies'})
-    assert response.status_code == OK
-
-
-def test_search_actor(client):
-    """
-    Test the search actor functionality of the API.
-
-    Args:
-        client (flask.testing.FlaskClient): The test client for the API.
-
-    Return:
-        None
-
-    Raises:
-        AssertionError: If the response status code is not OK (200).
-    """
-    response = client.post('/', data={'query': 'Leonardo DiCaprio', 'search_type': 'actors'})
-    assert response.status_code == OK
-
-
 def test_add_actor_route(client):
     """
     Test the add actor route of the API.

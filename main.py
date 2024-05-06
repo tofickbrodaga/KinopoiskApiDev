@@ -1,20 +1,15 @@
 """A module, which contains the main Flask app."""
-from os import getenv
-
 import requests
-from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from config import GET, HEADERS, OK, POST
+from config import DATABASE_URL, GET, HEADERS, OK, POST
 from model import Actor, Base, Movie
-
-load_dotenv()
 
 app = Flask(__name__)
 
-engine = create_engine(getenv('DATABASE_URL'))
+engine = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=engine)
 
 Base.metadata.create_all(engine)
