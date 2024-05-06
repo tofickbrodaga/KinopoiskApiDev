@@ -31,7 +31,9 @@ jobs:
         pip install pytest==6.2.5
         pip install numpy
         pip install requests
-        pip install dotenv
+        pip install python-dotenv
+        pip install flask
+        pip install sqlalchemy
     - name: Pytest
       run: pytest test_api.py
   linter_for_model:
