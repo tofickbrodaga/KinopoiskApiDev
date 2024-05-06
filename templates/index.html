@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Search</title>
+    <title>Main page</title>
     <link rel="stylesheet" type="text/css" href="static/index.css">
 </head>
 <body>
-<a href="/favourites"><button>View Favorites</button></a>
-<h1>Movie Search</h1>
+<h1>KinopoiskApiDev</h1>
 <form action="/" method="post">
     <label for="query">Enter movie or actor name:</label>
     <input type="text" id="query" name="query" required>
@@ -19,13 +18,16 @@
     </select>
     <button type="submit">Search</button>
 </form>
+<div class="center">
+<a href="/favourites"><button>View Favorites</button></a>
+</div>
 {% if results %}
     <h2>Search Results for "{{ query }}":</h2>
     {% if search_type == 'movies' %}
         <h3>Movies:</h3>
         <ul>
             {% for movie in results['docs'] %}
-                <li>Title: {{  movie.get('name') or movie.get('enName', '') or movie.get('alternativeName', '') }} ({{ movie['year'] }})</li>
+                <li>Title: {{ movie['alternativeName'] or movie['name'] or movie['enName'] }} ({{ movie['year'] }})</li>
                 <li>Rating: {{ movie['rating']['kp'] }} / 10</li>
                 <li>
                     <form action="/add_movie/{{ movie['id'] }}" method="post">
@@ -40,7 +42,7 @@
         <ul>
             {% for actor in results['docs'] %}
                 <li>Name: {{ actor['name'] }}</li>
-                <li>enName: {{ actor['enName'] }}</li>
+                <li>English Name: {{ actor['enName'] }}</li>
                 <li>
                     <form action="/add_actor/{{ actor['id'] }}" method="post">
                         <button type="submit">Add Actor to Favorites</button>
