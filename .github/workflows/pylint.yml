@@ -32,7 +32,7 @@ jobs:
         pip install pytest==6.2.5
         pip install numpy
     - name: Run tests inside Docker container
-      run: docker-compose run --rm kinopoisk-api-dev pytest test_api.py
+      run: python main.py & python test_api.py
 
   linter_for_model:
     name: Flake8 model.py
