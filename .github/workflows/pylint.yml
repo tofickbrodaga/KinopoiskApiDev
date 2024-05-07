@@ -54,7 +54,7 @@ jobs:
         pip install numpy
         pip install -r requirements.txt  # Добавлено установка зависимостей из requirements.txt
     - name: test for api
-      run: python main.py & python test_api.py
+      run: python test_api.py
 
   linter_for_model:
     name: Flake8 model.py
