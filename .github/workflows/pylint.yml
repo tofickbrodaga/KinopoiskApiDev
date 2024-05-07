@@ -1,8 +1,28 @@
-name: Проверка
+name: Main test
 on: [push]
 jobs:
+  container-job:
+    name: Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_HOST: 127.0.0.1
+          POSTGRES_PORT: 37891
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        ports:
+        - 37891:5432
+    steps:
+    - uses: actions/checkout@v2
+    - name: Python installation
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11
+    jobs:
   linter_for_main:
-    name: Flake8 RPM HW
+    name: Flake8 main.py
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -31,7 +51,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest==6.2.5
         pip install numpy
-    - name: Run tests inside Docker container
+    - name: test for api
       run: python main.py & python test_api.py
 
   linter_for_model:
@@ -49,14 +69,3 @@ jobs:
         pip install flake8==3.9.0 wemake-python-styleguide==0.15.3 bandit==1.7.2
     - name: Flake8
       run: flake8 model.py
-
-  run_docker_container:
-    name: Run Docker container
-    runs-on: ubuntu-latest
-    needs: [linter_for_main, tests_for_api, linter_for_model]
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
-    - name: Run Docker container
-      run: docker-compose up -d
