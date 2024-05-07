@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.11
-    jobs:
+
   linter_for_main:
     name: Flake8 main.py
     runs-on: ubuntu-latest
@@ -34,6 +34,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8==3.9.0 wemake-python-styleguide==0.15.3 bandit==1.7.2
+        pip install -r requirements.txt  # Добавлено установка зависимостей из requirements.txt
     - name: Flake8 main.py
       run: flake8 main.py test_api.py
 
@@ -51,6 +52,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest==6.2.5
         pip install numpy
+        pip install -r requirements.txt  # Добавлено установка зависимостей из requirements.txt
     - name: test for api
       run: python main.py & python test_api.py
 
@@ -67,5 +69,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8==3.9.0 wemake-python-styleguide==0.15.3 bandit==1.7.2
+        pip install -r requirements.txt  # Добавлено установка зависимостей из requirements.txt
     - name: Flake8
       run: flake8 model.py
