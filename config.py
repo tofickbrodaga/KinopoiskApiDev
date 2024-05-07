@@ -1,6 +1,6 @@
 from os import getenv
 
-DATABASE_URL="postgresql://test:test@localhost:37891/test"
+DATABASE_URL = "postgresql://test:test@localhost:37891/test"
 
 HEADERS = {
         "accept": "application/json",

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  kinopoisk-api-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/KinopoiskApiDev
+    environment:
+      - API_KEY="M2E8YKR-6R3M7H1-JHG0TD7-1361THB"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    ports:
+      - "37891:5432"
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=test
+
