@@ -1,8 +1,8 @@
 """Tests for the API routes."""
 import pytest
 
-from config import MOVED, OK
 from app import app
+from config import MOVED, OK
 
 
 @pytest.fixture
