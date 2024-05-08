@@ -2,7 +2,7 @@
 import pytest
 
 from config import MOVED, OK
-from main import app
+from app import app
 
 
 @pytest.fixture

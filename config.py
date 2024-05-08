@@ -1,5 +1,6 @@
 from os import getenv
 
+FLASK_PORT=5001
 DATABASE_URL = "postgresql://test:test@localhost:37891/test"
 
 HEADERS = {
