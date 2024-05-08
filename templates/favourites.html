@@ -29,6 +29,8 @@
     <ul>
         {% for actor in actors %}
             <li>{{ actor.name }} ({{ actor.enName }})
+                <li>Birthday: {{ actor['birthday'] }}</li>
+                <li>Age: {{ actor['age'] }}</li>
                 <form action="/favourites" method="post">
                     <input type="hidden" name="actor_id" value="{{ actor.id }}">
                     <button type="submit">Remove</button>

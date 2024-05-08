@@ -59,7 +59,7 @@ def search_actor(query):
     If the response status code is not OK (200), an empty list is returned.
     """
     url = f'https://api.kinopoisk.dev/v1.4/person/search?page=1&limit=10&query={query}'
-    response = requests.get(url, headers=HEADERS)
+    response = requests.get(url, headers=HEADERS, verify=False)
     if response.status_code == OK:
         return response.json()
     return []
@@ -77,7 +77,7 @@ def search_movie(query):
                       otherwise an empty list.
     """
     url = f'https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=10&query={query}'
-    response = requests.get(url, headers=HEADERS)
+    response = requests.get(url, headers=HEADERS, verify=False)
     if response.status_code == OK:
         return response.json()
     return []
@@ -95,7 +95,7 @@ def get_actor_details(actor_id):
               If the actor ID is not found or an error occurs, an empty dictionary is returned.
     """
     url = f'https://api.kinopoisk.dev/v1.4/person/{actor_id}'
-    response = requests.get(url, headers=HEADERS)
+    response = requests.get(url, headers=HEADERS, verify=False)
     if response.status_code == OK:
         return response.json()
     return {}
@@ -113,7 +113,7 @@ def get_movie_details(movie_id):
               If the movie ID is not found or an error occurs, an empty dictionary is returned.
     """
     url = f'https://api.kinopoisk.dev/v1.4/movie/{movie_id}'
-    response = requests.get(url, headers=HEADERS)
+    response = requests.get(url, headers=HEADERS, verify=False)
     if response.status_code == OK:
         return response.json()
     return {}
@@ -131,11 +131,15 @@ def add_actor(actor_id):
         flask.wrappers.Response: A redirect response to the 'index' route.
     """
     actor = get_actor_details(actor_id)
-    name = actor.get('name') or actor.get('enName', '')
+    name = actor.get('name')
+    enname = actor.get('enName', '')
+    age = actor.get('age', '')
     if name:
         session = Session()
         actor_obj = Actor(
             name=name,
+            age=age,
+            enname=enname,
         )
         session.add(actor_obj)
         session.commit()
@@ -169,7 +173,7 @@ def add_movie(movie_id):
     return redirect(url_for('index'))
 
 
-@app.route('/favourites', methods=['GET', 'POST'])
+@app.route('/favourites', methods=[GET, POST])
 def favourites():
     """
     Access the '/favourites' page: GET & DELETE.
@@ -184,7 +188,7 @@ def favourites():
         otherwise a rendered template of the 'favourites.html' page with all movies and actors.
     """
     session = Session()
-    if request.method == 'POST':
+    if request.method == POST:
         if 'movie_id' in request.form:
             movie_id = request.form.get('movie_id')
             movie = session.query(Movie).filter_by(id=movie_id).first()
