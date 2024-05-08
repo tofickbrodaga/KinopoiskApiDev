@@ -38,7 +38,7 @@ jobs:
     - name: Flake8 app.py & test_api.py
       run: flake8 app.py & flake8 test_api.py
 
-    linter_for_model:
+  linter_for_model:
     name: Flake8 model.py
     runs-on: ubuntu-latest
     steps:
