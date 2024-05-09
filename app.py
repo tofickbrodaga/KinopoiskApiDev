@@ -139,7 +139,7 @@ def add_actor(actor_id):
         actor_obj = Actor(
             name=name,
             age=age,
-            enname=enname,
+            enName=enname,
         )
         session.add(actor_obj)
         session.commit()
@@ -147,7 +147,7 @@ def add_actor(actor_id):
     return redirect(url_for('index'))
 
 
-@app.route('/add_movie/<movie_id>', methods=[POST])
+@app.route('/add_movie/<movie_id>', methods=['POST'])
 def add_movie(movie_id):
     """
     Add a movie to the database based on the provided movie ID.
@@ -164,8 +164,8 @@ def add_movie(movie_id):
         session = Session()
         movie_obj = Movie(
             name=name,
-            year=movie.get('year', 'None'),
-            rating_kp=movie.get('rating', {}).get('kp', 'None'),
+            year=movie.get('year'),
+            rating_kp=movie.get('rating', {}).get('kp'),
         )
         session.add(movie_obj)
         session.commit()

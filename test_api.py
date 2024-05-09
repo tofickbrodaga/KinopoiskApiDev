@@ -1,4 +1,6 @@
 """Tests for the API routes."""
+from unittest.mock import patch
+
 import pytest
 
 from app import app
@@ -31,38 +33,53 @@ def test_index_route(client):
     assert response.status_code == OK
 
 
-def test_add_actor_route(client):
-    """
-    Test the add actor route of the API.
+@patch('app.get_actor_details')
+def test_add_actor(mock_get_actor_details, client):
+    """Test add actor to the database.
 
     Args:
         client (flask.testing.FlaskClient): The test client for the API.
+        mock_get_actor_details: replaceable patch for creating a request.
 
     Return:
-        None
-
-    Raises:
-        AssertionError: If the response status code is not MOVED (302).
+        None.
     """
-    response = client.post('/add_actor/1')
+    mock_actor_details = {
+        'name': 'John Doe',
+        'enName': 'John Doe',
+        'age': 35,
+    }
+    mock_get_actor_details.return_value = mock_actor_details
+
+    response = client.post('/add_actor/123')
+
     assert response.status_code == MOVED
+    assert response.headers['Location'] == '/'
 
 
-def test_add_movie_route(client):
-    """
-    Test the add movie route of the API.
+@patch('app.get_movie_details')
+def test_add_movie(mock_get_movie_details, client):
+    """Test add actor to the database.
 
     Args:
         client (flask.testing.FlaskClient): The test client for the API.
+        mock_get_movie_details: replaceable patch for creating a request.
 
     Return:
-        None
-
-    Raises:
-        AssertionError: If the response status code is not MOVED (302).
+        None.
     """
-    response = client.post('/add_movie/1')
+    mock_movie_details = {
+        'name': 'Lion',
+        'year': 2017,
+        'rating_kp': 7.28,
+    }
+
+    mock_get_movie_details.return_value = mock_movie_details
+
+    response = client.post('/add_movie/12')
+
     assert response.status_code == MOVED
+    assert response.headers['Location'] == '/'
 
 
 def test_favorites_route(client):
