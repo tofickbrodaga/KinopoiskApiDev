@@ -22,7 +22,7 @@ jobs:
         python-version: 3.11
 
   linter_for_main:
-    name: Flake8 main.py
+    name: Flake8 app.py & test_api.py
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
